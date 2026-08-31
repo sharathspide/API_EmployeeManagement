@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EmployeeWebAPI.Model;
+using EmployeeWebAPI.Interface;
 
 namespace EmployeeWebAPI.Controllers
 {
@@ -7,17 +8,25 @@ namespace EmployeeWebAPI.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        public List<Employee_Model> employees = new List<Employee_Model>
-        {
-            new Employee_Model()
-        };
-
+        private readonly IEmployeeService _employeeService;
+        public EmployeeController(IEmployeeService employeeService) 
+        { 
+            _employeeService = employeeService;
+        }
+        
         [HttpGet("{company_id}")]
-        public ActionResult<List<Employee_Model>> GetAllEmployee(int company_id)
+        public async Task<ActionResult<List<Employee_Model>>> GetAllEmployee(int company_id)
         {
-            // return all employees or filter by company_id as needed
-            var result = employees.FindAll(e => e.company_id == company_id);
-            return Ok(result);
+            try
+            {
+                var result = await _employeeService.GetAllEmployeesAsync(company_id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "An error occurred while retrieving employees.");
+            }
         }
     }
 }
