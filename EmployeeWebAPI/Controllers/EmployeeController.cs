@@ -7,7 +7,6 @@ namespace EmployeeWebAPI.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        // fixed: declare type and instantiate the list
         public List<Employee_Model> employees = new List<Employee_Model>
         {
             new Employee_Model()
