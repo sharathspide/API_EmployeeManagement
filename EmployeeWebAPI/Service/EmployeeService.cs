@@ -173,6 +173,12 @@ namespace EmployeeWebAPI.Service
             }
         };
 
+        /// <summary>
+        /// Get all employees for the company 
+        /// </summary>
+        /// <param name="company_id"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<List<Employee_Model>> GetAllEmployeesAsync(int company_id)
         {
             try
@@ -200,6 +206,35 @@ namespace EmployeeWebAPI.Service
             {
                 Console.WriteLine(ex.Message );
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// Get an employee detail for a company based on the id of the user
+        /// </summary>
+        /// <param name="company_id"></param>
+        /// <param name="employee_id"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<Employee_Model?> GetEmployeeByIdAsync(int company_id, int employee_id) 
+        {
+            try
+            {
+                var employee = new Employee_Model();
+                if (company_id != 0 && employee_id != 0)
+                {
+                    employee = employees_Data.FirstOrDefault(x => x.company_id == company_id && x.employee_id == employee_id);
+                }
+                else
+                {
+                    throw new Exception("Invalid Company or Employee search");
+                }
+                return await Task.FromResult(employee);
+            }
+            catch (Exception e)
+            {  
+                Console.WriteLine(e.Message );
+                throw new Exception($"Something went wrong while searching or getting the employee {e.Message}", e);
             }
         }
     }

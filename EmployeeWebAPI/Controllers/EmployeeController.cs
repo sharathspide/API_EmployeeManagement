@@ -28,5 +28,24 @@ namespace EmployeeWebAPI.Controllers
                 return StatusCode(500, "An error occurred while retrieving employees.");
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult<Employee_Model>> GetEmployeeByIdAsync([FromQuery] int company_id, [FromQuery] int employee_id)
+        {
+            try
+            {
+                var employee = await _employeeService.GetEmployeeByIdAsync(company_id, employee_id);
+                if (employee == null)
+                {
+                    return NotFound("Not able to fetch the required data!!");
+                }
+                return Ok(employee);
+            }
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "An error occurred while retrieving employees.");
+            }
+        }
     }
 }
