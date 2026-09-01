@@ -221,8 +221,27 @@ namespace EmployeeWebAPI.Service
             try
             {
                 var employee = new Employee_Model();
+                
                 if (company_id != 0 && employee_id != 0)
                 {
+                    // Validates if the company is available in the Data DB
+                    var verifyCompanyInDataContext = employees_Data.Any(x => x.company_id.Equals(company_id));
+                    if (!verifyCompanyInDataContext)
+                    {
+                        throw new Exception("Company or Employee you are searchin is not available!!");
+                    }
+                    // Valudates if the employee is available in the company Data DB
+                    var verifyEmployeeInCompany = employees_Data.FindAll(x => x.company_id.Equals(company_id));
+                    if (!verifyEmployeeInCompany.Any(x => x.employee_id.Equals(employee_id)))
+                    {
+                        throw new Exception("Company or Employee you are searchin is not available!!");
+                    }
+                    
+                    //var verifyEmployeeInDB = employees_Data.Find(employee => employee.employee_id.Equals(employee_id));
+                    //if (verifyEmployeeInDB != null)
+                    //{
+                    //    throw new Exception();
+                    //}
                     employee = employees_Data.FirstOrDefault(x => x.company_id == company_id && x.employee_id == employee_id);
                 }
                 else
@@ -234,7 +253,7 @@ namespace EmployeeWebAPI.Service
             catch (Exception e)
             {  
                 Console.WriteLine(e.Message );
-                throw new Exception($"Something went wrong while searching or getting the employee {e.Message}", e);
+                throw new Exception($"Something went wrong while searching or getting the employee, {e.Message}", e);
             }
         }
     }
