@@ -13,11 +13,11 @@ namespace EmployeeWebAPI.Model
         public int employee_id { get; set; }
 		public int company_id {  get; set; }
 		public string? employee_name { get; set; }
-		public Address address { get; set; }
+		public Address? address { get; set; }
 		public string? country { get; set; }
 		public string? state {  get; set; }
 		public string? zipcode { get; set; }
-		public Contact contact_number { get; set; }
+		public Contact? contact_number { get; set; }
 
 		//banking_details{
 		//    type,
@@ -31,9 +31,9 @@ namespace EmployeeWebAPI.Model
 		//	Nationality,
 		//},
 		public int created_by { get; set; }
-		public DateTime created_date { get; set; }
-		public int updated_by {  get; set; }
-		public DateTime updated_date { get; set; }
+		public DateTime? created_date { get; set; }
+		public int? updated_by {  get; set; }
+		public DateTime? updated_date { get; set; }
 		public int authorized_admin {  get; set; }
 		//public Roles roles { get; set; }
 		//public Rights rights { get; set; }

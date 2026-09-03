@@ -48,5 +48,27 @@ namespace EmployeeWebAPI.Controllers
                 return StatusCode(500, $"{ex.Message}");
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateEmployeeAsync([FromBody] Employee_Model employee)
+        {
+            try
+            {
+                var isInserted = await _employeeService.CreateEmployeeAsync(employee, true);
+                if (isInserted)
+                {
+                    return Ok($"Sucessfully inserted into the DB");
+                }
+                else
+                {
+                    return BadRequest($"Something happened while inserting the employee");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, $"{ex.Message}");
+            }
+        }
     }
 }

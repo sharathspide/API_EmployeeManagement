@@ -256,5 +256,55 @@ namespace EmployeeWebAPI.Service
                 throw new Exception($"Something went wrong while searching or getting the employee, {e.Message}", e);
             }
         }
+
+        public async Task<bool> CreateEmployeeAsync(Employee_Model employee, bool isNewEmployee)
+        {
+            try
+            {
+                bool isValidId = true;
+                int newEmployeeId = 0;
+                while (isValidId)
+                {
+                    newEmployeeId = new Random().Next(100);
+                    if (employees_Data.Any(x => x.employee_id.Equals(newEmployeeId)))
+                    {
+                        isValidId = true;
+                        continue;
+                    }
+                    break;
+                }
+                
+                employee.employee_id = newEmployeeId;
+                if (validation(employee))
+                {
+
+                    employees_Data.Insert(employees_Data.Count(), employee);
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Something went wrong when inserting the record."); return false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception($"Something went wrong while inserting the employee, {e.Message}", e);
+            }
+            
+        }
+
+        private bool validation(Employee_Model employee)
+        {
+            if(employee != null)
+            {
+                if (employee?.company_id == null || employee?.company_id == 0 || employee?.employee_id == 0 || employee?.created_by == 0 || employee?.created_by == null)
+                {
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
     }
 }
